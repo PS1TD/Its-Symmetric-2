@@ -139,8 +139,10 @@ bool isSymmetric(vector<vector<cell>> &grid) {
 bool numberedCellsCardinalVisibilityCorrect(vector<vector<cell>> &grid) {
 	for (size_t i = 0; i < grid.size(); i++) {
 		for (size_t j = 0; j < grid.size(); j++) {
+
 			if (grid[i][j].value != 0) {
-				size_t k;
+
+				int k;
 
 				// check north
 				k			   = i;
@@ -149,10 +151,13 @@ bool numberedCellsCardinalVisibilityCorrect(vector<vector<cell>> &grid) {
 				if (k == 0) {
 					northCells = 1;
 				} else {
-					while (k >= 0 && grid[k][j].colored) {
+					while (k - 1 >= 0 && grid[k - 1][j].colored) {
 						k--;
 						northCells++;
 					}
+				}
+				if (northCells == 0) {
+					northCells = 1;
 				}
 
 				// check east
@@ -162,10 +167,13 @@ bool numberedCellsCardinalVisibilityCorrect(vector<vector<cell>> &grid) {
 				if (k == grid.size() - 1) {
 					eastCells = 1;
 				} else {
-					while (k < grid.size() && grid[i][k].colored) {
+					while (k + 1 < grid.size() && grid[i][k + 1].colored) {
 						k++;
 						eastCells++;
 					}
+				}
+				if (eastCells == 0) {
+					eastCells = 1;
 				}
 
 				// check south
@@ -175,10 +183,13 @@ bool numberedCellsCardinalVisibilityCorrect(vector<vector<cell>> &grid) {
 				if (k == grid.size() - 1) {
 					southCells = 1;
 				} else {
-					while (k < grid.size() && grid[k][j].colored) {
+					while (k + 1 < grid.size() && grid[k + 1][j].colored) {
 						k++;
 						southCells++;
 					}
+				}
+				if (southCells == 0) {
+					southCells = 1;
 				}
 
 				// check west
@@ -188,22 +199,24 @@ bool numberedCellsCardinalVisibilityCorrect(vector<vector<cell>> &grid) {
 				if (k == 0) {
 					westCells = 1;
 				} else {
-					while (k >= 0 && grid[i][k].colored) {
+					while (k - 1 >= 0 && grid[i][k - 1].colored) {
 						k--;
 						westCells++;
 					}
 				}
-
-				cout << i << " " << j << ": " << northCells << " " << eastCells
-					 << " " << southCells << " " << westCells << endl;
+				if (westCells == 0) {
+					westCells = 1;
+				}
 
 				if (grid[i][j].value !=
 					northCells * eastCells * southCells * westCells) {
-					// return false;
+					cout << "Cardinal Visibility: " << 0 << endl;
+					return false;
 				}
 			}
 		}
 	}
+	cout << "Cardinal Visibility: " << 1 << endl;
 	return true;
 }
 
@@ -336,7 +349,7 @@ int main() {
 
 	ifstream inputfile;
 
-	inputfile.open("example.txt");
+	inputfile.open("test.txt");
 	if (inputfile.is_open()) {
 
 		string line;
@@ -372,8 +385,7 @@ int main() {
 
 		isSymmetric(grid);
 
-		cout << "Cardinal Visibility: " << endl
-			 << numberedCellsCardinalVisibilityCorrect(grid) << endl;
+		numberedCellsCardinalVisibilityCorrect(grid);
 
 	} else {
 		cout << "Error opening file!";
