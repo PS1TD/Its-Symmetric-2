@@ -145,54 +145,66 @@ bool numberedCellsCardinalVisibilityCorrect(vector<vector<cell>> &grid) {
 				// check north
 				k			   = i;
 				int northCells = 0;
-				while (k >= 0 || !grid[k][j].colored) {
-					k--;
-					northCells++;
-				}
-				if (northCells == 0) {
+
+				if (k = 0) {
 					northCells = 1;
+				} else {
+					while (k >= 0 && grid[k][j].colored) {
+						k--;
+						northCells++;
+					}
 				}
 
 				// check east
 				k			  = j;
 				int eastCells = 0;
-				while (k < grid.size() || !grid[i][k].colored) {
-					k++;
-					eastCells++;
-				}
-				if (eastCells == 0) {
+
+				if (k = grid.size() - 1) {
 					eastCells = 1;
+				} else {
+					while (k < grid.size() && grid[i][k].colored) {
+						k++;
+						eastCells++;
+					}
 				}
 
 				// check south
 				k			   = i;
 				int southCells = 0;
-				while (k < grid.size() || !grid[k][j].colored) {
-					k++;
-					southCells++;
-				}
-				if (southCells == 0) {
+
+				if (k = grid.size() - 1) {
 					southCells = 1;
+				} else {
+					while (k < grid.size() && grid[k][j].colored) {
+						k++;
+						southCells++;
+					}
 				}
 
 				// check west
 				k			  = j;
 				int westCells = 0;
-				while (k >= 0 || !grid[i][k].colored) {
-					k--;
-					westCells++;
-				}
-				if (westCells == 0) {
+
+				if (k = 0) {
 					westCells = 1;
+				} else {
+					while (k >= 0 && grid[i][k].colored) {
+						k--;
+						westCells++;
+					}
 				}
+
+				cout << i << " " << j << ": " << northCells << " " << eastCells
+					 << " " << southCells << " " << westCells << endl;
 
 				if (grid[i][j].value !=
 					northCells * eastCells * southCells * westCells) {
-					return false;
+					// return false;
 				}
 			}
 		}
 	}
+	return true;
 }
 
 size_t getLargestCellSize(vector<vector<cell>> &grid) {
@@ -274,6 +286,50 @@ void printGrid(vector<vector<cell>> &grid) {
 	}
 }
 
+void colorCells(vector<vector<cell>> &grid) {
+	vector<vector<bool>> colorGrid;
+
+	ifstream solutioninputfile;
+
+	solutioninputfile.open("exampleColors.txt");
+	if (solutioninputfile.is_open()) {
+
+		string line;
+		while (getline(solutioninputfile, line)) {
+
+			istringstream lineStream(line);
+
+			string element;
+
+			vector<bool> lineVector;
+
+			while (getline(lineStream, element, ' ')) {
+				if (stoi(element) == 0) {
+
+					lineVector.push_back(false);
+				} else if (stoi(element) == 1) {
+
+					lineVector.push_back(true);
+				} else {
+					cout << "Cell is not either a 0 or a 1!" << endl;
+				}
+			}
+
+			colorGrid.push_back(lineVector);
+		}
+
+		solutioninputfile.close();
+
+		for (size_t i = 0; i < grid.size(); i++) {
+			for (size_t j = 0; j < grid.size(); j++) {
+				grid[i][j].colored = colorGrid[i][j];
+			}
+		}
+	} else {
+		cout << "Error opening file!";
+	}
+}
+
 int main() {
 
 	vector<vector<cell>> grid;
@@ -308,11 +364,17 @@ int main() {
 			grid.push_back(lineVector);
 		}
 
+		inputfile.close();
+
+		colorCells(grid);
+
 		printGrid(grid);
 
 		isSymmetric(grid);
 
-		inputfile.close();
+		cout << "Cardinal Visibility: " << endl
+			 << numberedCellsCardinalVisibilityCorrect(grid) << endl;
+
 	} else {
 		cout << "Error opening file!";
 	}
