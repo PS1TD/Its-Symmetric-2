@@ -1,0 +1,3 @@
+TODO:
+2x 180 rotational symmetry
+BFS Based Blod Detection (Check if all colored cells are connected)
