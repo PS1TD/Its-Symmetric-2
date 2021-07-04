@@ -136,6 +136,65 @@ bool isSymmetric(vector<vector<cell>> &grid) {
 	return a;
 }
 
+bool numberedCellsCardinalVisibilityCorrect(vector<vector<cell>> &grid) {
+	for (size_t i = 0; i < grid.size(); i++) {
+		for (size_t j = 0; j < grid.size(); j++) {
+			if (grid[i][j].value != 0) {
+				size_t k;
+
+				// check north
+				k			   = i;
+				int northCells = 0;
+				while (k >= 0 || !grid[k][j].colored) {
+					k--;
+					northCells++;
+				}
+				if (northCells == 0) {
+					northCells = 1;
+				}
+
+				// check east
+				k			  = j;
+				int eastCells = 0;
+				while (k < grid.size() || !grid[i][k].colored) {
+					k++;
+					eastCells++;
+				}
+				if (eastCells == 0) {
+					eastCells = 1;
+				}
+
+				// check south
+				k			   = i;
+				int southCells = 0;
+				while (k < grid.size() || !grid[k][j].colored) {
+					k++;
+					southCells++;
+				}
+				if (southCells == 0) {
+					southCells = 1;
+				}
+
+				// check west
+				k			  = j;
+				int westCells = 0;
+				while (k >= 0 || !grid[i][k].colored) {
+					k--;
+					westCells++;
+				}
+				if (westCells == 0) {
+					westCells = 1;
+				}
+
+				if (grid[i][j].value !=
+					northCells * eastCells * southCells * westCells) {
+					return false;
+				}
+			}
+		}
+	}
+}
+
 size_t getLargestCellSize(vector<vector<cell>> &grid) {
 	size_t maxSize = 0;
 
