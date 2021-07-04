@@ -146,7 +146,7 @@ bool numberedCellsCardinalVisibilityCorrect(vector<vector<cell>> &grid) {
 				k			   = i;
 				int northCells = 0;
 
-				if (k = 0) {
+				if (k == 0) {
 					northCells = 1;
 				} else {
 					while (k >= 0 && grid[k][j].colored) {
@@ -159,7 +159,7 @@ bool numberedCellsCardinalVisibilityCorrect(vector<vector<cell>> &grid) {
 				k			  = j;
 				int eastCells = 0;
 
-				if (k = grid.size() - 1) {
+				if (k == grid.size() - 1) {
 					eastCells = 1;
 				} else {
 					while (k < grid.size() && grid[i][k].colored) {
@@ -172,7 +172,7 @@ bool numberedCellsCardinalVisibilityCorrect(vector<vector<cell>> &grid) {
 				k			   = i;
 				int southCells = 0;
 
-				if (k = grid.size() - 1) {
+				if (k == grid.size() - 1) {
 					southCells = 1;
 				} else {
 					while (k < grid.size() && grid[k][j].colored) {
@@ -185,7 +185,7 @@ bool numberedCellsCardinalVisibilityCorrect(vector<vector<cell>> &grid) {
 				k			  = j;
 				int westCells = 0;
 
-				if (k = 0) {
+				if (k == 0) {
 					westCells = 1;
 				} else {
 					while (k >= 0 && grid[i][k].colored) {
